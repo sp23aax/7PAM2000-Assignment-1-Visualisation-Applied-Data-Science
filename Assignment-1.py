@@ -1,17 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Nov  9 13:58:44 2023
-
-@author: Saikiran
-"""
-
-# -*- coding: utf-8 -*-
-"""
 Created on Tue Nov  7 23:01:54 2023
 
 @author: Saikiran (sp23aax)
 """
-
+# Importing the required libraries for the visualisation
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import PercentFormatter
@@ -31,11 +24,11 @@ def parse_and_cleanse_data(alcohol_servings_file_path):
     return df
 
 def main():
-    # Read and preprocess data from a CSV file
-    alcohol_servings_file_path = "/Users/user/.spyder-py3/drinks.csv"
+    # Read and preprocess data from a loaded CSV file
+    alcohol_servings_file_path = "/Users/user/.spyder-py3/Assignment-1-Visualisation/drinks.csv"
     df = parse_and_cleanse_data(alcohol_servings_file_path)
 
-    # Display basic information about the DataFrame
+    # showing basic information about the DataFrame
     print("=> First few rows of the DataFrame:")
     print(df.head())
 
@@ -51,14 +44,14 @@ def main():
     missing_values = df.isnull()
     missing_count = missing_values.sum()
     total_count = len(df)
-    print("Missing Value Counts:")
+    print("Missing Value Counts:")# Display the missing value counts
     print(missing_count)
 
     # the top 20 countries with servings are filtered and a new DataFrame is result_df created with thease rows
     top_country = df.nlargest(20, 'beer_servings')
     initial_rows = len(df)
     
-    # Create a new DataFrame with the selected rows
+    # Creating a new DataFrame with the selected rows
     result_df = top_country.reset_index(drop=True)
     rows_dropped = initial_rows - len(result_df)
     
@@ -66,23 +59,23 @@ def main():
     print(f"=> {rows_dropped} rows were dropped in the initial DataFrame = df, and the new DataFrame is as follows:")
     print(result_df)
 
-    # Create a line plot
+    # Creating a line plot
     create_line_plot(result_df)
  
-    # Create the pie chart
+    # Creating the pie chart
     create_pie_chart(result_df, 'country', 'total_litres_of_pure_alcohol', "Total liters of pure alcohol by Country")
 
-    # Create a bar graph
+    # Creating a bar graph
     create_bar_graph(result_df)
 
 def create_line_plot(data):
     """
-    Create a line plot to visualize beer, spirit, and wine servings by country.
+    Creating a line plot to visualize beer, spirit, and wine servings by country.
 
     Args:
     data (pd.DataFrame): Data containing country, beer_servings, spirit_servings, and wine_servings.
     """
-    # Create a line plot to visualize beer, spirit, and wine servings
+    # Creating a line plot to visualize beer, spirit, and wine servings
     print("=> This line plot shows that each highest Servings in countries")
 
     plt.figure(figsize=(16, 8))
@@ -106,7 +99,7 @@ def create_line_plot(data):
                  xy=(max_beer_servings_country, data['beer_servings'].max()),
                  xytext=(max_beer_servings_country, data['beer_servings'].max() + 30),
                  arrowprops=dict(arrowstyle='->'))
-    # Highlight the country with the highest beer_servings
+    # Highlight the country with the highest spirit_servings
     max_spirit_servings_country = data.loc[data['spirit_servings'].idxmax()]['country']
     plt.annotate(f'Highest spirit_servings: {max_spirit_servings_country}',
                  xy=(max_spirit_servings_country, data['spirit_servings'].max()),
@@ -122,7 +115,7 @@ def create_line_plot(data):
     plt.xlabel('Countries', color='b', fontweight='bold', fontsize=20)
     plt.ylabel('Beer Servings , Wine servings and Spirit servings', color='r', fontweight='bold', fontsize=16)
     plt.title('Highest alcohol Consumption in countrys', color='g', fontweight='bold', fontsize=26)
-    plt.tight_layout()
+    plt.tight_layout() #for better visualization of the plot it improves spacing and layout
     plt.legend()
     plt.xticks(rotation=90)
     plt.grid(True)
